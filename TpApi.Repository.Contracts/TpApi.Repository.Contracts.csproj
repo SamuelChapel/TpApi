@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TpApi.Business.Contracts\TpApi.Business.Contracts.csproj" />
     <ProjectReference Include="..\TpApi.Entities\TpApi.Entities.csproj" />
   </ItemGroup>
 

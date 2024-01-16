@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TpApi.Api.Dto.Users;
 using TpApi.Api.Mappers;
 using TpApi.Business.Contracts;
 using TpApi.Business.Contracts.Requests.Users;
+using TpApi.Business.Contracts.Responses.Users;
 using TpApi.Entities;
 
 namespace TpApi.Api.Controllers;
@@ -15,63 +15,69 @@ public class UserController(IUserService userService, UserMapper userMapper) : C
     private readonly UserMapper _userMapper = userMapper;
 
     [HttpGet("{id}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     public async Task<ActionResult<UserResponse>> GetById(string id)
     {
-        User? user = await _userService.GetById(id);
+        User user = await _userService.GetById(id);
 
-        if (user is null)
-            return NotFound();
-
-        var userResponse = _userMapper.ToUserResponse(user);
+        UserResponse userResponse = _userMapper.Map(user);
 
         return Ok(userResponse);
     }
 
     [HttpGet]
+    [ProducesResponseType(200)]
     public async Task<ActionResult<List<UserResponse>>> GetAll()
     {
         var users = await _userService.GetAll();
 
-        var userResponses = users.Select(_userMapper.ToUserResponse).ToList();
+        var userResponses = users.Select(_userMapper.Map).ToList();
+
+        return Ok(userResponses);
+    }
+
+    [HttpPost("Search")]
+    [ProducesResponseType(200)]
+    public async Task<ActionResult<List<UserResponse>>> Search(UserSearchRequest request)
+    {
+        var users = await _userService.Search(request);
+
+        var userResponses = users.Select(_userMapper.Map).ToList();
 
         return Ok(userResponses);
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserResponse>> Create(
-        UserCreateRequest request)
+    [ProducesResponseType(201)]
+    public async Task<ActionResult<UserResponse>> Create(UserCreateRequest request)
     {
-        var user = await _userService.Add(request);
+        var user = await _userService.Create(request);
 
-        if (user is null)
-            return Conflict();
+        var userResponse = _userMapper.Map(user);
 
-        var userResponse = _userMapper.ToUserResponse(user);
-
-        return Ok(userResponse);
+        return CreatedAtAction(nameof(GetById), new { id = userResponse.Id }, userResponse);
     }
 
     [HttpPut]
-    public async Task<ActionResult<UserResponse>> Update(
-        UserUpdateRequest request)
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<UserResponse>> Update(UserUpdateRequest request)
     {
         var user = await _userService.Update(request);
 
-        if (user is null)
-            return BadRequest();
-
-        var userResponse = _userMapper.ToUserResponse(user);
+        var userResponse = _userMapper.Map(user);
 
         return Ok(userResponse);
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Delete(
-        string id)
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Delete(string id)
     {
-        if (await _userService.Delete(id))
-            return NoContent();
+        await _userService.Delete(id);
 
-        return NotFound();
+        return NoContent();
     }
 }

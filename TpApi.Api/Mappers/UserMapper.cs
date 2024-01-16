@@ -1,11 +1,11 @@
 ﻿using Riok.Mapperly.Abstractions;
-using TpApi.Api.Dto.Users;
+using TpApi.Business.Contracts.Responses.Users;
 using TpApi.Entities;
 
 namespace TpApi.Api.Mappers;
 
-[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.Target)]
+[Mapper(RequiredMappingStrategy = RequiredMappingStrategy.None)]
 public partial class UserMapper
 {
-    public partial UserResponse ToUserResponse(User user);
+    public partial UserResponse Map(User user);
 }

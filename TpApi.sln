@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpApi.Api", "TpApi.Api\TpApi.Api.csproj", "{DFF5A4F0-DDB5-4B72-B13C-2A62694C8B7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpApi.Api", "TpApi.Api\TpApi.Api.csproj", "{DFF5A4F0-DDB5-4B72-B13C-2A62694C8B7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpApi.Business", "TpApi.Business\TpApi.Business.csproj", "{32137392-944F-4324-A763-84EB99066D16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpApi.Business", "TpApi.Business\TpApi.Business.csproj", "{32137392-944F-4324-A763-84EB99066D16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpApi.Business.Contracts", "TpApi.Business.Contracts\TpApi.Business.Contracts.csproj", "{96F41DC3-E8B6-4983-9CED-0CA8D51773E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpApi.Business.Contracts", "TpApi.Business.Contracts\TpApi.Business.Contracts.csproj", "{96F41DC3-E8B6-4983-9CED-0CA8D51773E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpApi.Repository", "TpApi.Repository\TpApi.Repository.csproj", "{28C3B1C9-2605-453B-BF0F-45037D745071}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpApi.Repository", "TpApi.Repository\TpApi.Repository.csproj", "{28C3B1C9-2605-453B-BF0F-45037D745071}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpApi.Repository.Contracts", "TpApi.Repository.Contracts\TpApi.Repository.Contracts.csproj", "{FA7B8241-D6B4-4E23-9C39-438DA47425AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpApi.Repository.Contracts", "TpApi.Repository.Contracts\TpApi.Repository.Contracts.csproj", "{FA7B8241-D6B4-4E23-9C39-438DA47425AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TpApi.Entities", "TpApi.Entities\TpApi.Entities.csproj", "{AD6D3DF6-64D7-40F6-8F89-181129D684F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TpApi.Entities", "TpApi.Entities\TpApi.Entities.csproj", "{AD6D3DF6-64D7-40F6-8F89-181129D684F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{98B26FFF-5B79-40E1-916D-391470E2D088}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DFF5A4F0-DDB5-4B72-B13C-2A62694C8B7F} = {98B26FFF-5B79-40E1-916D-391470E2D088}
+		{32137392-944F-4324-A763-84EB99066D16} = {98B26FFF-5B79-40E1-916D-391470E2D088}
+		{96F41DC3-E8B6-4983-9CED-0CA8D51773E3} = {98B26FFF-5B79-40E1-916D-391470E2D088}
+		{28C3B1C9-2605-453B-BF0F-45037D745071} = {98B26FFF-5B79-40E1-916D-391470E2D088}
+		{FA7B8241-D6B4-4E23-9C39-438DA47425AF} = {98B26FFF-5B79-40E1-916D-391470E2D088}
+		{AD6D3DF6-64D7-40F6-8F89-181129D684F5} = {98B26FFF-5B79-40E1-916D-391470E2D088}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9759EADE-1C59-427E-AFEA-660420BD4A55}

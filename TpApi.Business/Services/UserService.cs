@@ -1,4 +1,5 @@
 ﻿using TpApi.Business.Contracts;
+using TpApi.Business.Contracts.Exceptions;
 using TpApi.Business.Contracts.Requests.Users;
 using TpApi.Entities;
 using TpApi.Repository.Contracts;
@@ -9,24 +10,31 @@ public class UserService(IUserRepository userRepository) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
 
-    public Task<User?> GetById(string id)
+    public async Task<User> GetById(string id)
     {
-        if (Guid.TryParse(id, out Guid guid))
-            return _userRepository.GetById(Guid.Parse(id));
+        if (Guid.TryParse(id, out Guid guid) && await _userRepository.GetById(guid) is User u)
+        {
+            return u;
+        }
 
-        return Task.FromResult(null as User);
+        throw new NotFoundException("Utilisateur non trouvé");
     }
 
-    public Task<List<User>> GetAll()
+    public async Task<List<User>> GetAll()
     {
-        return _userRepository.GetAll();
+        return await _userRepository.GetAll();
     }
 
-    public async Task<User?> Add(UserCreateRequest request)
+    public async Task<List<User>> Search(UserSearchRequest request)
+    {
+        return await _userRepository.Search(request);
+    }
+
+    public async Task<User> Create(UserCreateRequest request)
     {
         if (await _userRepository.IsEmailDuplicate(request.Email))
         {
-            return null;
+            throw new BadRequestException("Email déjà utilisé");
         }
 
         var user = new User(request.FirstName, request.LastName, request.Email);
@@ -34,12 +42,9 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await _userRepository.Add(user);
     }
 
-    public async Task<User?> Update(UserUpdateRequest request)
+    public async Task<User> Update(UserUpdateRequest request)
     {
         var user = await GetById(request.Id);
-
-        if (user is null)
-            return null;
 
         user.FirstName = request.FirstName ?? user.FirstName;
         user.LastName = request.LastName ?? user.LastName;
@@ -48,15 +53,10 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await _userRepository.Update(user);
     }
 
-    public async Task<bool> Delete(string id)
+    public async Task Delete(string id)
     {
         var user = await GetById(id);
 
-        if (user is null)
-            return false;
-
         await _userRepository.Delete(user);
-
-        return true;
     }
 }
