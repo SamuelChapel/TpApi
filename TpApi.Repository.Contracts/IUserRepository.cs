@@ -6,6 +6,6 @@ namespace TpApi.Repository.Contracts;
 
 public interface IUserRepository : IReadRepository<User>, IWriteRepository<User>
 {
-    public Task<List<User>> Search(UserSearchRequest request);
+    public Task<List<User>> Search(SearchUserRequest request);
     public Task<bool> IsEmailDuplicate(string email);
 }

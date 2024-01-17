@@ -8,14 +8,14 @@ namespace TpApi.Repository.Database.Repositories;
 
 public class UserRepository(AppDbContext dbContext) : IUserRepository
 {
-    private const int DEFAULTPAGE = 1;
-    private const int DEFAULTCOUNT = 50;
-
     private readonly AppDbContext _dbContext = dbContext;
 
     public async Task<User?> GetById(Guid id)
     {
-        return await _dbContext.Users.FindAsync(id);
+        return await _dbContext.Users
+            .Where(u => u.Id == id)
+            .Include(u => u.Games)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<List<User>> GetAll()
@@ -23,24 +23,22 @@ public class UserRepository(AppDbContext dbContext) : IUserRepository
         return await _dbContext.Users.ToListAsync();
     }
 
-    public async Task<List<User>> Search(UserSearchRequest request)
+    public async Task<List<User>> Search(SearchUserRequest request)
     {
         var users = _dbContext.Users.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Search))
             users = users.Where(u => u.FirstName.Contains(request.Search));
 
-        var page = request.Page ?? DEFAULTPAGE;
-        var count = request.Count ?? DEFAULTCOUNT;
-        var startIndex = (page - 1) * count;
+        var startIndex = (request.Page - 1) * request.Count;
 
         users = users.Skip(startIndex)
-                     .Take(count);
+                     .Take(request.Count);
 
         return await users.ToListAsync();
     }
 
-    public async Task<User> Add(User user)
+    public async Task<User> Create(User user)
     {
         await _dbContext.Users.AddAsync(user);
 

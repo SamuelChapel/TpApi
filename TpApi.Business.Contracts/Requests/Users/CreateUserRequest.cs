@@ -2,7 +2,7 @@
 
 namespace TpApi.Business.Contracts.Requests.Users;
 
-public record UserCreateRequest(
+public record CreateUserRequest(
     string FirstName,
     string LastName,
     string Email

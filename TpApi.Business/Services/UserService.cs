@@ -6,9 +6,10 @@ using TpApi.Repository.Contracts;
 
 namespace TpApi.Business.Services;
 
-public class UserService(IUserRepository userRepository) : IUserService
+public class UserService(IUserRepository userRepository, IGameService gameService) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
+    private readonly IGameService _gameService = gameService;
 
     public async Task<User> GetById(string id)
     {
@@ -25,12 +26,12 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await _userRepository.GetAll();
     }
 
-    public async Task<List<User>> Search(UserSearchRequest request)
+    public async Task<List<User>> Search(SearchUserRequest request)
     {
         return await _userRepository.Search(request);
     }
 
-    public async Task<User> Create(UserCreateRequest request)
+    public async Task<User> Create(CreateUserRequest request)
     {
         if (await _userRepository.IsEmailDuplicate(request.Email))
         {
@@ -39,10 +40,10 @@ public class UserService(IUserRepository userRepository) : IUserService
 
         var user = new User(request.FirstName, request.LastName, request.Email);
 
-        return await _userRepository.Add(user);
+        return await _userRepository.Create(user);
     }
 
-    public async Task<User> Update(UserUpdateRequest request)
+    public async Task<User> Update(UpdateUserRequest request)
     {
         var user = await GetById(request.Id);
 
@@ -58,5 +59,18 @@ public class UserService(IUserRepository userRepository) : IUserService
         var user = await GetById(id);
 
         await _userRepository.Delete(user);
+    }
+
+    public async Task<User> AddGame(AdduserGameRequest request)
+    {
+        var user = await GetById(request.UserId);
+
+        var game = await _gameService.GetById(request.GameId);
+
+        user.Games.Add(game);
+
+        await _userRepository.Update(user);
+
+        return user;
     }
 }

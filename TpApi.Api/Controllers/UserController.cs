@@ -21,7 +21,7 @@ public class UserController(IUserService userService, UserMapper userMapper) : C
     {
         User user = await _userService.GetById(id);
 
-        UserResponse userResponse = _userMapper.Map(user);
+        var userResponse = _userMapper.ToUserWithGamesResponse(user);
 
         return Ok(userResponse);
     }
@@ -32,29 +32,29 @@ public class UserController(IUserService userService, UserMapper userMapper) : C
     {
         var users = await _userService.GetAll();
 
-        var userResponses = users.Select(_userMapper.Map).ToList();
+        var userResponses = users.Select(_userMapper.ToUserResponse).ToList();
 
         return Ok(userResponses);
     }
 
     [HttpPost("Search")]
     [ProducesResponseType(200)]
-    public async Task<ActionResult<List<UserResponse>>> Search(UserSearchRequest request)
+    public async Task<ActionResult<List<UserResponse>>> Search(SearchUserRequest request)
     {
         var users = await _userService.Search(request);
 
-        var userResponses = users.Select(_userMapper.Map).ToList();
+        var userResponses = users.Select(_userMapper.ToUserResponse).ToList();
 
         return Ok(userResponses);
     }
 
     [HttpPost]
     [ProducesResponseType(201)]
-    public async Task<ActionResult<UserResponse>> Create(UserCreateRequest request)
+    public async Task<ActionResult<UserResponse>> Create(CreateUserRequest request)
     {
         var user = await _userService.Create(request);
 
-        var userResponse = _userMapper.Map(user);
+        var userResponse = _userMapper.ToUserResponse(user);
 
         return CreatedAtAction(nameof(GetById), new { id = userResponse.Id }, userResponse);
     }
@@ -62,11 +62,11 @@ public class UserController(IUserService userService, UserMapper userMapper) : C
     [HttpPut]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<UserResponse>> Update(UserUpdateRequest request)
+    public async Task<ActionResult<UserResponse>> Update(UpdateUserRequest request)
     {
         var user = await _userService.Update(request);
 
-        var userResponse = _userMapper.Map(user);
+        var userResponse = _userMapper.ToUserWithGamesResponse(user);
 
         return Ok(userResponse);
     }
@@ -79,5 +79,15 @@ public class UserController(IUserService userService, UserMapper userMapper) : C
         await _userService.Delete(id);
 
         return NoContent();
+    }
+
+    [HttpPost("AddGame")]
+    public async Task<ActionResult<UserResponse>> AddGame(AdduserGameRequest request)
+    {
+        var user = await _userService.AddGame(request);
+
+        var userResponse = _userMapper.ToUserWithGamesResponse(user);
+
+        return Ok(userResponse);
     }
 }

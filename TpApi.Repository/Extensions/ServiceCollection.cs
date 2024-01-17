@@ -19,6 +19,7 @@ public static class ServiceCollection
         });
 
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<IGameRepository, GameRepository>();
 
         return services;
     }

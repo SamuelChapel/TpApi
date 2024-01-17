@@ -25,5 +25,9 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Email)
                .IsRequired();
+
+        builder.HasMany(u => u.Games)
+               .WithOne(g => g.User)
+               .HasForeignKey(g => g.UserId);
     }
 }

@@ -4,7 +4,8 @@ using TpApi.Entities;
 
 namespace TpApi.Business.Contracts;
 
-public interface IUserService : IService<User, UserCreateRequest, UserUpdateRequest>
+public interface IUserService : IService<User, CreateUserRequest, UpdateUserRequest>
 {
-    public Task<List<User>> Search(UserSearchRequest request);
+    public Task<List<User>> Search(SearchUserRequest request);
+    public Task<User> AddGame(AdduserGameRequest request);
 }

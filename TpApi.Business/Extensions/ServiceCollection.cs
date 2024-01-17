@@ -9,6 +9,7 @@ public static class ServiceCollection
     public static IServiceCollection AddBusiness(this IServiceCollection services)
     {
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<IGameService, GameService>();
 
         return services;
     }

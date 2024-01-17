@@ -7,6 +7,7 @@ public static class ServiceCollection
     public static IServiceCollection AddApi(this IServiceCollection services)
     {
         services.AddScoped<UserMapper>();
+        services.AddScoped<GameMapper>();
 
         return services;
     }
