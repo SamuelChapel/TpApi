@@ -63,9 +63,14 @@ public class UserService(IUserRepository userRepository, IGameService gameServic
 
     public async Task<User> AddGame(AdduserGameRequest request)
     {
-        var user = await GetById(request.UserId);
-
         var game = await _gameService.GetById(request.GameId);
+
+        if (game.UserId is not null)
+        {
+            throw new BadRequestException("Jeu déjà assigné");
+        }
+
+        var user = await GetById(request.UserId);
 
         user.Games.Add(game);
 

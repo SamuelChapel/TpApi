@@ -5,17 +5,25 @@ using TpApi.Entities.Common;
 
 namespace TpApi.Repository.Database.Contexts;
 
-public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public sealed class AppDbContext : DbContext
 {
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Game> Games { get; set; } = null!;
+
+    public AppDbContext()
+    {
+    }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-        var users = GetRandomUsers();
-        modelBuilder.Entity<User>().HasData(users);
+        //var users = GetRandomUsers();
+        //modelBuilder.Entity<User>().HasData(users);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
